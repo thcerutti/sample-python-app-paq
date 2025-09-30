@@ -1,0 +1,35 @@
+# Dockerfile para desenvolvimento com hot reload
+FROM python:3.11-slim
+
+# Define o diretório de trabalho no container
+WORKDIR /app
+
+# Define variáveis de ambiente para desenvolvimento
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV FLASK_ENV=development
+ENV FLASK_DEBUG=1
+
+# Instala dependências do sistema
+RUN apt-get update && apt-get install -y \
+    gcc \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copia o arquivo de dependências
+COPY requirements.txt .
+
+# Instala as dependências Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Instala flask com reload automático
+RUN pip install --no-cache-dir watchdog
+
+# Copia o código da aplicação
+COPY . .
+
+# Expõe a porta que a aplicação Flask usa
+EXPOSE 5000
+
+# Comando para executar a aplicação com reload automático
+CMD ["python", "app.py"]
