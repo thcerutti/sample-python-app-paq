@@ -1,289 +1,140 @@
-# 🚀 API Flask - Gerenciamento de Usuários
+# � API de Usuários com Flask + SQLite
 
-Uma API REST simples e eficiente desenvolvida com Flask para gerenciamento de usuários. Esta aplicação demonstra as operações básicas de CRUD (Create, Read) com exemplos práticos de endpoints GET e POST.
+> Um projetinho perfeito para você, iniciante em Python, brincar de construir uma API e salvar dados de verdade com SQLite. Simples, direto e divertido!
 
-## 📋 Funcionalidades
+## ✨ O que essa API faz?
+- Lista todos os usuários (GET /usuarios)
+- Busca um usuário pelo ID (GET /usuarios/<id>)
+- Cria um novo usuário (POST /usuarios)
+- Valida se nome e email foram enviados e se o email já existe
+- Usa um banco de dados SQLite (um arquivo `.db`) que é criado automaticamente
 
-- ✅ **Listagem de usuários** - Endpoint GET para listar todos os usuários
-- ✅ **Busca por ID** - Endpoint GET para buscar usuário específico
-- ✅ **Criação de usuários** - Endpoint POST para adicionar novos usuários
-- ✅ **Validação de dados** - Validação de campos obrigatórios e unicidade de email
-- ✅ **Tratamento de erros** - Respostas padronizadas para diferentes cenários
-- ✅ **Dados em memória** - Simulação de banco de dados para desenvolvimento
+## 🧰 O que você precisa
+- Python 3 instalado
+- pip (gerenciador de pacotes do Python)
 
-## 🛠️ Tecnologias Utilizadas
+Se não tiver certeza, roda no terminal:
 
-- **Python 3.x**
-- **Flask 2.3.3** - Framework web minimalista
-- **Werkzeug 2.3.7** - Biblioteca WSGI
-- **UUID** - Geração de identificadores únicos
-- **Datetime** - Manipulação de datas
-
-## 📁 Estrutura do Projeto
-
-```
-sample-python-app-paq/
-├── app.py              # Aplicação principal da API
-├── requirements.txt    # Dependências do projeto
-├── .gitignore         # Arquivos ignorados pelo Git
-└── README.md          # Documentação do projeto
+```bash
+python --version
+pip --version
 ```
 
-## 🚀 Como Executar
+## ▶️ Como rodar em 3 passos
 
-### Pré-requisitos
-
-
-### Instalação
-
-1. **Clone o repositório:**
+1) Clonar o projeto
 ```bash
 git clone https://github.com/thcerutti/sample-python-app-paq.git
 cd sample-python-app-paq
 ```
 
-2. **Crie um ambiente virtual (recomendado):**
+2) (Opcional, mas recomendado) Criar um ambiente virtual
 ```bash
 python -m venv venv
-source venv/bin/activate  # No Windows: venv\Scripts\activate
+source venv/bin/activate  # no Windows: venv\Scripts\activate
 ```
 
-3. **Instale as dependências:**
+3) Instalar e rodar
 ```bash
 pip install -r requirements.txt
-```
-
-4. **Execute a aplicação:**
-```bash
 python app.py
 ```
 
-A API estará disponível em: `http://localhost:5000`
-
-
-## Deploy on Vercel
-
-This project is configured to run on Vercel Functions (Python runtime):
-
-- `api/index.py` exposes the Flask `app` so Vercel can detect it as a WSGI app.
-- `vercel.json` sets the Python runtime and rewrites all routes to the function.
-- SQLite path defaults to `/tmp/app.db` on Vercel (ephemeral per deployment) or `app.db` locally. You can override via `DATABASE_PATH` env var.
-
-Steps:
-
-1. Push this repo to GitHub/GitLab.
-2. Import into Vercel, keeping Root Directory at repo root.
-3. Ensure Python is enabled (runtime 3.12). No build command is required.
-4. Optionally set `DATABASE_PATH` env var (e.g., `/tmp/app.db`).
-
-Limitations on Vercel:
-
-- The filesystem is ephemeral and resets on new deployments and during scaling. For persistent data, use a managed database.
-## 📚 Documentação da API
-
-### Base URL
+Pronto! A API vai estar em:
 ```
 http://localhost:5000
 ```
 
-### Endpoints Disponíveis
+Na primeira execução, o arquivo do banco (`app.db`) é criado e alguns usuários de exemplo já aparecem!
 
-#### 1. 🏠 Página Inicial
-```http
-GET /
-```
+## 🧪 Teste rapidinho
 
-**Resposta:**
-```json
-{
-  "mensagem": "Bem-vindo à API Flask!",
-  "versao": "1.0.0",
-  "endpoints_disponiveis": {
-    "GET /": "Página inicial",
-    "GET /usuarios": "Lista todos os usuários",
-    "GET /usuarios/<id>": "Busca usuário por ID",
-    "POST /usuarios": "Cria um novo usuário"
-  }
-}
-```
-
-#### 2. 👥 Listar Todos os Usuários
-```http
-GET /usuarios
-```
-
-**Resposta:**
-```json
-{
-  "usuarios": [
-    {
-      "id": "1",
-      "nome": "João",
-      "email": "joao@email.com",
-      "criado_em": "2024-01-01T10:00:00"
-    }
-  ],
-  "total": 1
-}
-```
-
-#### 3. 👤 Buscar Usuário por ID
-```http
-GET /usuarios/{id}
-```
-
-**Parâmetros:**
-- `id` (string): ID único do usuário
-
-**Resposta de Sucesso:**
-```json
-{
-  "id": "1",
-  "nome": "João",
-  "email": "joao@email.com",
-  "criado_em": "2024-01-01T10:00:00"
-}
-```
-
-**Resposta de Erro (404):**
-```json
-{
-  "erro": "Usuário não encontrado"
-}
-```
-
-#### 4. ➕ Criar Novo Usuário
-```http
-POST /usuarios
-```
-
-**Body (JSON):**
-```json
-{
-  "nome": "Novo Usuário",
-  "email": "usuario@email.com"
-}
-```
-
-**Resposta de Sucesso (201):**
-```json
-{
-  "mensagem": "Usuário criado com sucesso",
-  "usuario": {
-    "id": "uuid-gerado",
-    "nome": "Novo Usuário",
-    "email": "usuario@email.com",
-    "criado_em": "2025-09-29T12:30:45.123456"
-  }
-}
-```
-
-**Resposta de Erro (400):**
-```json
-{
-  "erro": "Nome é obrigatório"
-}
-```
-
-## 🧪 Exemplos de Uso
-
-### Testando com cURL
-
-1. **Listar usuários:**
+- Ver a página inicial no navegador: http://localhost:5000
+- Listar usuários:
 ```bash
-curl -X GET http://localhost:5000/usuarios
+curl http://localhost:5000/usuarios
 ```
-
-2. **Buscar usuário específico:**
-```bash
-curl -X GET http://localhost:5000/usuarios/1
-```
-
-3. **Criar novo usuário:**
+- Criar um novo usuário:
 ```bash
 curl -X POST http://localhost:5000/usuarios \
   -H "Content-Type: application/json" \
-  -d '{"nome": "Ana Silva", "email": "ana@email.com"}'
+  -d '{"nome": "Ana", "email": "ana@example.com"}'
 ```
 
-### Testando com Python
+## 📚 Endpoints explicadinhos
 
-```python
-import requests
+1) GET `/`
+- Mostra uma mensagem de boas-vindas e dicas dos endpoints.
 
-# Listar usuários
-response = requests.get('http://localhost:5000/usuarios')
-print(response.json())
+2) GET `/usuarios`
+- Retorna a lista de usuários e o total.
 
-# Criar usuário
-novo_usuario = {
-    "nome": "Carlos Santos",
-    "email": "carlos@email.com"
+3) GET `/usuarios/<id>`
+- Procura um usuário pelo ID. Se não achar, retorna 404.
+
+4) POST `/usuarios`
+- Cria um usuário novo.
+- Envie um JSON assim:
+```json
+{
+  "nome": "Seu Nome",
+  "email": "seu@email.com"
 }
-response = requests.post('http://localhost:5000/usuarios', json=novo_usuario)
-print(response.json())
+```
+- Se der tudo certo: 201 (criado!)
+- Se faltar algo ou o email já existir: 400 (pedido inválido)
+
+## 🧠 Como o banco funciona
+- É um SQLite, que é um arquivinho só (`app.db`).
+- Ele é criado automaticamente na primeira vez.
+- A aplicação também já coloca alguns usuários iniciais pra você testar.
+- Quer mudar onde o arquivo fica? Use a variável de ambiente `DATABASE_PATH`.
+
+Exemplo (Linux/macOS):
+```bash
+export DATABASE_PATH=/caminho/para/meu_banco.db
+python app.py
 ```
 
-## ⚙️ Configurações
+## ☁️ Deploy na Vercel (opcional)
 
-A aplicação roda por padrão em:
-- **Host:** `0.0.0.0` (aceita conexões de qualquer IP)
-- **Porta:** `5000`
-- **Debug:** `True` (desabilitar em produção)
+Você pode publicar essa API de graça na Vercel. Já deixamos pronto:
+- `api/index.py` expõe o `app` do Flask para a Vercel entender.
+- `vercel.json` direciona tudo para a função Python.
 
-Para modificar essas configurações, edite a linha final do arquivo `app.py`:
+Passos resumidos:
+1. Suba o código no GitHub.
+2. No site da Vercel, importe o repositório.
+3. Deploy! (não precisa comando de build)
 
-```python
-app.run(debug=False, host='127.0.0.1', port=8080)
+Atenção: na Vercel, o arquivo do banco fica em `/tmp/app.db` e NÃO é permanente. É ótimo pra testes, mas se você quiser dados que não somem, use um banco gerenciado (Postgres, MySQL, etc.). Posso te ajudar a integrar! ;)
+
+## 🗂️ Estrutura do projeto
+```
+sample-python-app-paq/
+├─ app.py            # Código da API Flask
+├─ requirements.txt  # Dependências
+├─ api/
+│  └─ index.py       # Ponto de entrada para Vercel
+├─ vercel.json       # Config da Vercel
+├─ DOCKER.md         # (Opcional) Dicas de Docker
+├─ Dockerfile        # (Opcional) Docker
+├─ Dockerfile.dev    # (Opcional) Docker dev
+└─ README.md         # Este arquivo lindo
 ```
 
-## 🛡️ Validações
+## �️ Problemas comuns (e soluções)
+- Porta ocupada (5000): feche outros servidores ou troque a porta no `app.py`.
+- Ambiente virtual não ativa no Windows: use `venv\\Scripts\\activate`.
+- Erro de JSON no POST: confira se mandou `Content-Type: application/json` e o corpo certinho.
 
-A API inclui as seguintes validações:
+## 🌟 Ideias de upgrades
+- Adicionar atualizar e deletar usuário (PUT/DELETE)
+- Paginação na listagem
+- Login com token (JWT)
+- Conectar num banco na nuvem (Postgres, MySQL)
 
-- ✅ **Nome obrigatório** - Campo não pode estar vazio
-- ✅ **Email obrigatório** - Campo não pode estar vazio
-- ✅ **Email único** - Não permite emails duplicados
-- ✅ **Formato JSON** - Valida se o body da requisição é um JSON válido
+## �‍💻 Autor
+Feito com carinho por [@thcerutti](https://github.com/thcerutti).
 
-## 🚨 Tratamento de Erros
-
-| Código | Descrição | Exemplo |
-|--------|-----------|---------|
-| 400 | Bad Request | Dados inválidos ou ausentes |
-| 404 | Not Found | Usuário ou endpoint não encontrado |
-| 405 | Method Not Allowed | Método HTTP não permitido |
-| 500 | Internal Server Error | Erro interno do servidor |
-
-## 📈 Próximos Passos
-
-Esta é uma versão básica da API. Possíveis melhorias incluem:
-
-- 🔄 **Operações UPDATE e DELETE** para CRUD completo
-- 🗄️ **Integração com banco de dados** (SQLite, PostgreSQL, MySQL)
-- 🔐 **Autenticação e autorização** (JWT, OAuth)
-- 📄 **Paginação** para listagem de usuários
-- 🔍 **Filtros e busca** por nome ou email
-- ✅ **Testes unitários** e de integração
-- 📝 **Documentação Swagger/OpenAPI**
-- 🐳 **Containerização com Docker**
-
-## 🤝 Contribuindo
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
-
-## 📝 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 👨‍💻 Autor
-
-**Desenvolvido por:** [@thcerutti](https://github.com/thcerutti)
-
----
-
-⭐ **Se este projeto foi útil para você, considere dar uma estrela!**
+Se curtir, deixa uma ⭐ no repositório! Isso ajuda muito :)

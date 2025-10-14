@@ -167,11 +167,12 @@ def metodo_nao_permitido(error):
     return jsonify({"erro": "Método não permitido"}), 405
 
 if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
     print("🚀 Iniciando API Flask...")
     print("📍 Endpoints disponíveis:")
     print("   GET  /                  - Página inicial")
     print("   GET  /usuarios          - Lista usuários")
     print("   GET  /usuarios/<id>     - Busca usuário")
     print("   POST /usuarios          - Cria usuário")
-    print("\n🌐 Acesse: http://localhost:5000")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    print(f"\n🌐 Acesse: http://localhost:{port}")
+    app.run(debug=True, host='0.0.0.0', port=port)
