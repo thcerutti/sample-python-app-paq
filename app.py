@@ -8,7 +8,13 @@ app = Flask(__name__)
 
 # Configuração do banco de dados SQLite
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-app.config["DATABASE"] = os.path.join(BASE_DIR, "app.db")
+# Em Vercel, o filesystem da função é somente leitura, mas /tmp é gravável.
+# Permite sobrescrever via variável de ambiente DATABASE_PATH.
+default_db_path = os.path.join(BASE_DIR, "app.db")
+app.config["DATABASE"] = os.environ.get(
+    "DATABASE_PATH",
+    "/tmp/app.db" if os.environ.get("VERCEL") else default_db_path,
+)
 
 # Dados iniciais para popular o banco na primeira execução
 usuarios_iniciais = [

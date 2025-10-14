@@ -33,8 +33,6 @@ sample-python-app-paq/
 
 ### Pré-requisitos
 
-- Python 3.x instalado
-- pip (gerenciador de pacotes Python)
 
 ### Instalação
 
@@ -62,6 +60,25 @@ python app.py
 
 A API estará disponível em: `http://localhost:5000`
 
+
+## Deploy on Vercel
+
+This project is configured to run on Vercel Functions (Python runtime):
+
+- `api/index.py` exposes the Flask `app` so Vercel can detect it as a WSGI app.
+- `vercel.json` sets the Python runtime and rewrites all routes to the function.
+- SQLite path defaults to `/tmp/app.db` on Vercel (ephemeral per deployment) or `app.db` locally. You can override via `DATABASE_PATH` env var.
+
+Steps:
+
+1. Push this repo to GitHub/GitLab.
+2. Import into Vercel, keeping Root Directory at repo root.
+3. Ensure Python is enabled (runtime 3.12). No build command is required.
+4. Optionally set `DATABASE_PATH` env var (e.g., `/tmp/app.db`).
+
+Limitations on Vercel:
+
+- The filesystem is ephemeral and resets on new deployments and during scaling. For persistent data, use a managed database.
 ## 📚 Documentação da API
 
 ### Base URL
