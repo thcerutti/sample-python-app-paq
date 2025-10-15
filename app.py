@@ -1,10 +1,14 @@
 from flask import Flask, request, jsonify, g
+from flask_cors import CORS
 import uuid
 from datetime import datetime
 import sqlite3
 import os
 
 app = Flask(__name__)
+
+# Habilitar CORS para todas as origens
+CORS(app)
 
 # Importar e registrar Blueprints (rotas organizadas em arquivos separados)
 from routes.produtos import produtos_bp

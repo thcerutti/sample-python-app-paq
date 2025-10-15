@@ -127,6 +127,24 @@ export DATABASE_PATH=/caminho/para/meu_banco.db
 python app.py
 ```
 
+## 🌐 CORS (Cross-Origin Resource Sharing)
+
+A API está configurada para **aceitar requisições de qualquer origem**! Isso significa que você pode chamar a API de:
+- Qualquer site (frontend React, Vue, Angular, etc.)
+- Aplicativos mobile
+- Extensões de navegador
+- Qualquer ferramenta de teste (Postman, Insomnia, etc.)
+
+A biblioteca `flask-cors` está habilitada e permite:
+- ✅ Todas as origens (`*`)
+- ✅ Todos os métodos HTTP (GET, POST, PUT, DELETE, etc.)
+- ✅ Todos os headers
+
+**⚠️ Atenção para produção:** Por segurança, em produção é recomendado especificar apenas as origens confiáveis. Exemplo:
+```python
+CORS(app, origins=["https://meusite.com", "https://app.meusite.com"])
+```
+
 ## ☁️ Deploy na Vercel (opcional)
 
 Você pode publicar essa API de graça na Vercel. Já deixamos pronto:
