@@ -8,7 +8,10 @@ app = Flask(__name__)
 
 # Importar e registrar Blueprints (rotas organizadas em arquivos separados)
 from routes.produtos import produtos_bp
+from routes.cs_jogadas import cs_jogadas_bp
+
 app.register_blueprint(produtos_bp)
+app.register_blueprint(cs_jogadas_bp)
 
 # Configuração do banco de dados SQLite
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
