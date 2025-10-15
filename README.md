@@ -8,6 +8,7 @@
 - Cria um novo usuário (POST /usuarios)
 - Valida se nome e email foram enviados e se o email já existe
 - Usa um banco de dados SQLite (um arquivo `.db`) que é criado automaticamente
+- Busca jogadas de destaque do Counter-Strike direto de uma API externa (GET /cs/jogadas)
 
 ## 🧰 O que você precisa
 - Python 3 instalado
@@ -60,11 +61,19 @@ curl -X POST http://localhost:5000/usuarios \
   -H "Content-Type: application/json" \
   -d '{"nome": "Ana", "email": "ana@example.com"}'
 ```
+- Ver jogadas de destaque do CS:
+```bash
+curl http://localhost:5000/cs/jogadas
+```
 
 ## 📚 Endpoints explicadinhos
 
+### 🏠 Rotas principais
+
 1) GET `/`
 - Mostra uma mensagem de boas-vindas e dicas dos endpoints.
+
+### 👥 Rotas de usuários
 
 2) GET `/usuarios`
 - Retorna a lista de usuários e o total.
@@ -83,6 +92,28 @@ curl -X POST http://localhost:5000/usuarios \
 ```
 - Se der tudo certo: 201 (criado!)
 - Se faltar algo ou o email já existir: 400 (pedido inválido)
+
+### 🎮 Rotas de Counter-Strike
+
+5) GET `/cs/jogadas`
+- Busca as jogadas de destaque do CS direto da API do GitHub.
+- Retorna um JSON com as jogadas mais incríveis do jogo!
+- **Exemplo de resposta:**
+```json
+{
+  "total": 5,
+  "jogadas": [
+    {
+      "id": "highlight-1",
+      "titulo": "Ace incrível no Dust2",
+      "descricao": "Jogador faz ace solo...",
+      "link": "https://...",
+      "imagem": "https://..."
+    }
+  ]
+}
+```
+- Se a API externa estiver fora do ar: 503 (serviço indisponível)
 
 ## 🧠 Como o banco funciona
 - É um SQLite, que é um arquivinho só (`app.db`).
@@ -116,7 +147,8 @@ sample-python-app-paq/
 ├─ requirements.txt  # Dependências
 ├─ routes/           # Rotas organizadas por módulo (Blueprints)
 │  ├─ __init__.py    # Marca a pasta como pacote Python
-│  └─ produtos.py    # Exemplo: rotas de produtos
+│  ├─ produtos.py    # Exemplo: rotas de produtos
+│  └─ cs_jogadas.py  # Rotas de jogadas do Counter-Strike
 ├─ api/
 │  └─ index.py       # Ponto de entrada para Vercel
 ├─ vercel.json       # Config da Vercel
@@ -160,17 +192,25 @@ app.register_blueprint(produtos_bp)
 
 Pronto! Agora suas rotas `/produtos` vão funcionar. 🎉
 
-**Exemplo prático:** Já tem um exemplo funcionando em `routes/produtos.py` com:
-- GET /produtos - Lista produtos
-- GET /produtos/<id> - Busca produto
-- POST /produtos - Cria produto
-- DELETE /produtos/<id> - Deleta produto
+**Exemplos práticos prontos pra usar:**
+
+1) **`routes/produtos.py`** - CRUD de produtos:
+   - GET /produtos - Lista produtos
+   - GET /produtos/<id> - Busca produto
+   - POST /produtos - Cria produto
+   - DELETE /produtos/<id> - Deleta produto
+
+2) **`routes/cs_jogadas.py`** - Jogadas do Counter-Strike:
+   - GET /cs/jogadas - Busca jogadas de destaque de uma API externa
+   - Usa `requests` para fazer chamadas HTTP
+   - Exemplo de como consumir APIs externas
 
 ### Por que usar Blueprints?
 - ✅ Código mais organizado e fácil de manter
 - ✅ Cada "módulo" cuida das suas próprias rotas
 - ✅ Reutilizar blueprints em outros projetos
 - ✅ Trabalhar em equipe fica mais fácil (cada um mexe em um arquivo)
+- ✅ Separar lógica de negócio (usuários, produtos, jogos, etc.)
 
 ## �🌟 Ideias de upgrades
 - Adicionar atualizar e deletar usuário (PUT/DELETE)
