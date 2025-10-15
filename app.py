@@ -6,6 +6,10 @@ import os
 
 app = Flask(__name__)
 
+# Importar e registrar Blueprints (rotas organizadas em arquivos separados)
+from routes.produtos import produtos_bp
+app.register_blueprint(produtos_bp)
+
 # Configuração do banco de dados SQLite
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Em Vercel, o filesystem da função é somente leitura, mas /tmp é gravável.

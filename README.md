@@ -114,6 +114,9 @@ Atenção: na Vercel, o arquivo do banco fica em `/tmp/app.db` e NÃO é permane
 sample-python-app-paq/
 ├─ app.py            # Código da API Flask
 ├─ requirements.txt  # Dependências
+├─ routes/           # Rotas organizadas por módulo (Blueprints)
+│  ├─ __init__.py    # Marca a pasta como pacote Python
+│  └─ produtos.py    # Exemplo: rotas de produtos
 ├─ api/
 │  └─ index.py       # Ponto de entrada para Vercel
 ├─ vercel.json       # Config da Vercel
@@ -128,13 +131,54 @@ sample-python-app-paq/
 - Ambiente virtual não ativa no Windows: use `venv\\Scripts\\activate`.
 - Erro de JSON no POST: confira se mandou `Content-Type: application/json` e o corpo certinho.
 
-## 🌟 Ideias de upgrades
+## � Como criar rotas em arquivos separados (Blueprints)
+
+Quer organizar sua API em módulos? Use **Blueprints**! É tipo dividir seu código em "mini-apps".
+
+### Passo a passo:
+
+1) **Crie um arquivo na pasta `routes/`**
+   - Exemplo: `routes/produtos.py`
+
+2) **No arquivo, importe Blueprint e crie as rotas:**
+```python
+from flask import Blueprint, jsonify
+
+# Cria o Blueprint
+produtos_bp = Blueprint('produtos', __name__)
+
+@produtos_bp.route('/produtos', methods=['GET'])
+def listar_produtos():
+    return jsonify({"produtos": []})
+```
+
+3) **No `app.py`, registre o Blueprint:**
+```python
+from routes.produtos import produtos_bp
+app.register_blueprint(produtos_bp)
+```
+
+Pronto! Agora suas rotas `/produtos` vão funcionar. 🎉
+
+**Exemplo prático:** Já tem um exemplo funcionando em `routes/produtos.py` com:
+- GET /produtos - Lista produtos
+- GET /produtos/<id> - Busca produto
+- POST /produtos - Cria produto
+- DELETE /produtos/<id> - Deleta produto
+
+### Por que usar Blueprints?
+- ✅ Código mais organizado e fácil de manter
+- ✅ Cada "módulo" cuida das suas próprias rotas
+- ✅ Reutilizar blueprints em outros projetos
+- ✅ Trabalhar em equipe fica mais fácil (cada um mexe em um arquivo)
+
+## �🌟 Ideias de upgrades
 - Adicionar atualizar e deletar usuário (PUT/DELETE)
 - Paginação na listagem
 - Login com token (JWT)
 - Conectar num banco na nuvem (Postgres, MySQL)
 
-## �‍💻 Autor
+## 👩‍💻 Autor
 Feito com carinho por [@thcerutti](https://github.com/thcerutti).
 
 Se curtir, deixa uma ⭐ no repositório! Isso ajuda muito :)
